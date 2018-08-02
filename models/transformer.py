@@ -212,6 +212,3 @@ class Transformer(Model):
         new_cache = tf.concat(new_cache, axis=2)  # [batch_size, n_step, num_blocks, num_hidden]
 
         return decoder_output, new_cache
-
-
-# class WeightedTransformer
