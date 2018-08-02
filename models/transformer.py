@@ -61,7 +61,7 @@ class Transformer(Model):
                 encoder_output = residual(encoder_output,
                                           ff_hidden(
                                               inputs=encoder_output,
-                                              hidden_size=4 * self._config.hidden_units,
+                                              hidden_size=self._config.ff_hidden_units,
                                               output_size=self._config.hidden_units,
                                               activation=self._ff_activation),
                                           dropout_rate=residual_dropout_rate)
@@ -86,7 +86,7 @@ class Transformer(Model):
                                    multiplier=self._config.hidden_units ** 0.5 if self._config.scale_embedding else 1.0,
                                    name="dst_embedding")
         # Positional Encoding
-        decoder_output += common_attention.add_timing_signal_1d(decoder_output)
+        decoder_output = common_attention.add_timing_signal_1d(decoder_output)
         # Dropout
         decoder_output = tf.layers.dropout(decoder_output,
                                            rate=residual_dropout_rate,
@@ -131,7 +131,7 @@ class Transformer(Model):
                 decoder_output = residual(decoder_output,
                                           ff_hidden(
                                               decoder_output,
-                                              hidden_size=4 * self._config.hidden_units,
+                                              hidden_size=self._config.ff_hidden_units,
                                               output_size=self._config.hidden_units,
                                               activation=self._ff_activation),
                                           dropout_rate=residual_dropout_rate)
@@ -154,7 +154,7 @@ class Transformer(Model):
                                    multiplier=self._config.hidden_units ** 0.5 if self._config.scale_embedding else 1.0,
                                    name="dst_embedding")
         # Positional Encoding
-        decoder_output += common_attention.add_timing_signal_1d(decoder_output)
+        decoder_output = common_attention.add_timing_signal_1d(decoder_output)
         # Dropout
         decoder_output = tf.layers.dropout(decoder_output,
                                            rate=residual_dropout_rate,
@@ -201,7 +201,7 @@ class Transformer(Model):
                 decoder_output = residual(decoder_output,
                                           ff_hidden(
                                               decoder_output,
-                                              hidden_size=4 * self._config.hidden_units,
+                                              hidden_size=self._config.ff_hidden_units,
                                               output_size=self._config.hidden_units,
                                               activation=self._ff_activation),
                                           dropout_rate=residual_dropout_rate)
@@ -212,3 +212,6 @@ class Transformer(Model):
         new_cache = tf.concat(new_cache, axis=2)  # [batch_size, n_step, num_blocks, num_hidden]
 
         return decoder_output, new_cache
+
+
+# class WeightedTransformer
