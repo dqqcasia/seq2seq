@@ -74,6 +74,12 @@ def train(config):
 
             if config.train.eval_on_dev:
                 new_dev_bleu = evaluator.evaluate(**config.dev)
+
+                summary = tf.Summary(value=[tf.Summary.Value(tag="dev_bleu",
+                                                             simple_value=new_dev_bleu)])
+
+                summary_writer.add_summary(summary, step)
+
                 if config.train.toleration is None:
                     save()
                 else:

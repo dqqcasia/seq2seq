@@ -330,8 +330,8 @@ class Model(object):
 
             _, next_preds, next_scores = self.test_output(decoder_output, reuse=reuse)
 
-            next_preds = get_bias_preds(next_preds, bias)
-            next_scores = get_bias_scores(next_scores, bias)
+            next_preds = get_bias_preds(next_preds, bias) #[batch_size * beam_size]
+            next_scores = get_bias_scores(next_scores, bias) #[batch_size * beam_size, beam_size]
 
             # Update scores.
             scores = scores[:, None] + next_scores  # [batch_size * beam_size, beam_size]
